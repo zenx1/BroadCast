@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>BroadCastConnect</title>
+    <script>
+        window.addEventListener('DOMContentLoaded', function (event) {
+            var wsUrl = 'ws://' + document.location.host + '/chat';
+            var socket = new WebSocket(wsUrl);
+
+            var img = document.getElementById('img-container');
+            socket.addEventListener('message', function (event) {
+                var imageData;
+                try {
+                    imageData = JSON.parse(event.data);
+                } catch (ex) {
+                    return;
+                }
+                if (!imageData.fromMobileApp) {
+                    return;
+                }
+                img.src = imageData.path;
+            });
+            socket.onclose = function (event) {
+                window.location.href = document.referrer;
+            };
+        });
+    </script>
+    <style>
+
+        html, body {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        #img-container {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <img id="img-container" />
+</body>
+</html>
