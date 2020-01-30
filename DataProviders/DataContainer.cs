@@ -47,5 +47,15 @@ namespace BroadCast.DataProviders
                 remotePath = "/" + selectedAlbumID + "/" + pathParts[pathParts.Length - 1]
             });
         }
+
+        public static event EventHandler ImageViewActvitiyClosed;
+
+        public static void InformImageViewActvitiyClosed()
+        {
+            ImageViewActvitiyClosed?.Invoke(null, new NewImageSelectedEventArgs
+            {
+                remotePath = "/"
+            });
+        }
     }
 }

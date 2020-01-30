@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.Widget;
 using BroadCast.DataProviders;
+using System;
 
 namespace BroadCast.Activities
 {
@@ -23,6 +24,13 @@ namespace BroadCast.Activities
         void GridView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             DataContainer.SetSelectedImageRemotePath(e.Position);
+        }
+
+        public override void OnBackPressed()
+        {
+            DataContainer.InformImageViewActvitiyClosed();
+            Finish();
+            return;
         }
     }
 }

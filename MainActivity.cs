@@ -43,6 +43,13 @@ namespace BroadCast
                     imageData["path"] = ((DataContainer.NewImageSelectedEventArgs)e).remotePath;
                     server.wss.sendMessage(imageData.ToString());
                 });
+                DataContainer.ImageViewActvitiyClosed += new EventHandler((object sender, EventArgs e) =>
+                {
+                    JObject imageData = new JObject();
+                    imageData["fromMobileApp"] = true;
+                    imageData["imageViewActivityClosed"] = true;
+                    server.wss.sendMessage(imageData.ToString());
+                });
                 Connect();
             });
         }

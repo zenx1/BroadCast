@@ -25,5 +25,11 @@ namespace BroadCast.Activities
             DataContainer.SetSelectedAlbum(e.Position);
             StartActivity(typeof(Activities.ImageViewActivity));
         }
+
+        public override void OnBackPressed()
+        {
+            var activity = (Activity)this;
+            activity.FinishAffinity();
+        }
     }
 }

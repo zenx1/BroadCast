@@ -10,6 +10,7 @@
             var socket = new WebSocket(wsUrl);
 
             var img = document.getElementById('img-container');
+            var msg = document.getElementById('instruction');
             socket.addEventListener('message', function (event) {
                 var imageData;
                 try {
@@ -20,7 +21,15 @@
                 if (!imageData.fromMobileApp) {
                     return;
                 }
-                img.src = imageData.path;
+                if (imageData.path) {
+                    msg.style.display = "none";
+                    img.style.display = "block";
+                    img.src = imageData.path;
+                } else if (imageData.imageViewActivityClosed) {
+                    img.removeAttribute('src');
+                    img.style.display = "none";
+                    msg.style.display = "block";
+                }
             });
             socket.onclose = function (event) {
                 window.location.href = document.referrer;
@@ -35,6 +44,10 @@
             bottom: 0;
             left: 0;
             right: 0;
+        }        
+
+        body {
+            font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
         }
 
         #img-container {
@@ -46,9 +59,14 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        h1 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <img id="img-container" />
+    <h1 id="instruction">Select gallery in BroadCast mobile app and then select an image from that gallery to have it displayed here</h1>
 </body>
 </html>
