@@ -1326,8 +1326,9 @@ int string path_password_eye 0x7f0d0032
 int string path_password_eye_mask_strike_through 0x7f0d0033
 int string path_password_eye_mask_visible 0x7f0d0034
 int string path_password_strike_through 0x7f0d0035
-int string search_menu_title 0x7f0d0036
-int string status_bar_notification_info_overflow 0x7f0d0037
+int string permissions_denied 0x7f0d0036
+int string search_menu_title 0x7f0d0037
+int string status_bar_notification_info_overflow 0x7f0d0038
 int style AlertDialog_AppCompat 0x7f0e0000
 int style AlertDialog_AppCompat_Light 0x7f0e0001
 int style Animation_AppCompat_Dialog 0x7f0e0002

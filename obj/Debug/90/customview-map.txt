@@ -7,6 +7,8 @@ BroadCast.CustomControls.SquareImageView;obj\Debug\90\res\layout\image_view_mode
 cache-path;C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\lp\39\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
 color;obj\Debug\90\res\values\colors.xml
 color;obj\Debug\90\res\values\ic_launcher_background.xml
+crc64031e3c629a288849.SquareImageView;obj\Debug\90\res\layout\album_view_model.xml
+crc64031e3c629a288849.SquareImageView;obj\Debug\90\res\layout\image_view_model.xml
 external-cache-path;C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\lp\39\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
 external-path;C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\lp\39\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
 foreground;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher.xml
@@ -28,4 +30,5 @@ resources;obj\Debug\90\res\values\strings.xml
 resources;obj\Debug\90\res\values\styles.xml
 string;obj\Debug\90\res\values\strings.xml
 style;obj\Debug\90\res\values\styles.xml
+TextView;obj\Debug\90\res\layout\activity_main.xml
 TextView;obj\Debug\90\res\layout\album_view_model.xml

@@ -331,3 +331,5 @@ C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\android\assets\System
 C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\android\assets\System.Security.Cryptography.X509Certificates.dll
 C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\android\assets\System.Threading.Timer.dll
 C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\android\assets\WebSocket4Net.dll
+C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\android\src\crc64030277e1ec9f01e4\Permissions.java
+C:\Users\Valentino\Desktop\projects\BroadCast\obj\Debug\90\stamp\SetupDependenciesForDesigner.stamp

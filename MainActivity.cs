@@ -8,6 +8,11 @@ using BroadCast.Web;
 using ZXing.Mobile;
 using Newtonsoft.Json.Linq;
 using System;
+using Android.Support.V4.Content;
+using Android.Content.PM;
+using Android.Support.V4.App;
+using System.Collections.Generic;
+using Android.Widget;
 
 namespace BroadCast
 {
@@ -21,6 +26,11 @@ namespace BroadCast
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+            EnsurePermissions();
+        }
+
+        private void init()
+        {
             ThreadPool.QueueUserWorkItem(o =>
             {
                 ImageAlbums albums = new ImageAlbums();
@@ -30,11 +40,45 @@ namespace BroadCast
                 {
                     JObject imageData = new JObject();
                     imageData["fromMobileApp"] = true;
-                    imageData["path"] = ((DataContainer.NewImageSelectedEventArgs)e).remotePath;                    
+                    imageData["path"] = ((DataContainer.NewImageSelectedEventArgs)e).remotePath;
                     server.wss.sendMessage(imageData.ToString());
                 });
                 Connect();
             });
+        }
+
+        private void DisplayMissingPermissionsMessage()
+        {
+            TextView message = FindViewById<TextView>(Resource.Id.message);
+            message.Text = GetString(Resource.String.permissions_denied);
+        }
+        private void HideMissingPermissionsMessage()
+        {
+            TextView message = FindViewById<TextView>(Resource.Id.message);
+            message.Text = "";
+        }
+        private List<string> missingPermissions;
+        private void EnsurePermissions()
+        {
+            missingPermissions = new List<string> { };
+
+            foreach (string permission in Helpers.Constants.REQUIRED_PERMISSIONS)
+            {
+                if (ContextCompat.CheckSelfPermission(this, permission) != (int)Permission.Granted)
+                {
+                    missingPermissions.Add(permission);
+                }
+            }
+
+            if (missingPermissions.Count > 0)
+            {
+                DisplayMissingPermissionsMessage();
+                ActivityCompat.RequestPermissions(this, missingPermissions.ToArray(), Helpers.Constants.PERMISSION_REQUEST);
+            }
+            else
+            {
+                init();
+            }
         }
 
         public void Connect()
@@ -62,10 +106,34 @@ namespace BroadCast
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == Helpers.Constants.PERMISSION_REQUEST)
+            {
+                if (grantResults.Length == missingPermissions.Count)
+                {
+                    bool permissionsGranted = true;
+                    for (int grantIndex = 0; grantIndex < grantResults.Length - 1; grantIndex++)
+                    {
+                        if (grantResults[grantIndex] != Permission.Granted)
+                        {
+                            permissionsGranted = false;
+                            break;
+                        }
+                    }
+                    if (permissionsGranted)
+                    {
+                        HideMissingPermissionsMessage();
+                        init();
+                    }
+                    else
+                    {
+                        DisplayMissingPermissionsMessage();
+                    }
+                }
+            }
+            else
+            {
+                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
         }
-
     }
 }
