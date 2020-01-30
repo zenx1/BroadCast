@@ -20,3 +20,8 @@ Steps:
 6) tap on one of the images and it will appear in your web browser
 7) press back key on your mobile phone to go back to gallery with all folders with images
 8) select another folder or press back key again to exit app
+
+## Roadmap
+1) add video cast with video transcoding as HTML5 support for video formats is limited
+2) implement "apps" feature (youtube, netflix,...), make it easier to use mentioned services on smart TVs
+3) implement file sharing service; use web browser to browse through files on phone with ability to download files
