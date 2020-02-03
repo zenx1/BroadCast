@@ -16,7 +16,7 @@ Steps to install:
 2) when transferred, tap apk file to start installation; you'll be prompted to allow installation, you'll need to accept to install
 
 Steps to use:
-1) when you've installed the app, run it, app will start scanning for QR code using phone camera
+1) when you've installed the app, run it; app will start scanning for QR code using phone camera
 2) open following page in a web browser on another device (any device with a modern web browser): http://broadcastconnect.herokuapp.com/
 3) point the phone camera to QR code displayed in the browser
 4) when app recognizes QR code it will automatically open gallery with all folders containing images on your smartphone
