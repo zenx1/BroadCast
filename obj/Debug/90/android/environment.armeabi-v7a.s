@@ -23,8 +23,8 @@
 	.section	.rodata..L.str.1,"aMS",%progbits,1
 	.type	.L.str.1, %object
 .L.str.1:
-	.asciz	"com.companyname.broadcast"
-	.size	.L.str.1, 26
+	.asciz	"com.zenx1.broadcast"
+	.size	.L.str.1, 20
 	.section	.data.application_config,"aw",%progbits
 	.type	application_config, %object
 	.p2align	2
@@ -82,7 +82,7 @@ mono_aot_mode_name:
 	.section	.rodata..L.str.8,"aMS",%progbits,1
 	.type	.L.str.8, %object
 .L.str.8:
-	.asciz	"01e0317e-8f9a-443d-ab6c-b45bffe6e36b"
+	.asciz	"e4506965-bf10-4e20-aab1-1b31b28565a3"
 	.size	.L.str.8, 37
 	.section	.rodata..L.str.9,"aMS",%progbits,1
 	.type	.L.str.9, %object

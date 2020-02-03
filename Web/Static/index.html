@@ -5,35 +5,91 @@
     <meta charset="utf-8" />
     <title>BroadCastConnect</title>
     <script>
-        window.addEventListener('DOMContentLoaded', function (event) {
-            var wsUrl = 'ws://' + document.location.host + '/chat';
+        var clientMessaging = function (wsUrl) {
             var socket = new WebSocket(wsUrl);
 
-            var img = document.getElementById('img-container');
-            var msg = document.getElementById('instruction');
-            socket.addEventListener('message', function (event) {
-                var imageData;
+            var callbacks = {};
+
+            var ensureSocketOpened = (function () {
+                var isSocketOpened = false;
+                var executeOnSocketOpen = [];
+
+                socket.onopen = function (e) {
+                    isSocketOpened = true;
+                    executeOnSocketOpen.forEach(function (onOpened) {
+                        onOpened();
+                    });
+                    executeOnSocketOpen = [];
+                };
+                return function (onOpened) {
+                    if (isSocketOpened) {
+                        onOpened();
+                    } else {
+                        executeOnSocketOpen.push(onOpened);
+                    }
+                };
+            })();
+
+            socket.onmessage = function (event) {
+                var messageObject;
                 try {
-                    imageData = JSON.parse(event.data);
+                    messageObject = JSON.parse(event.data);
                 } catch (ex) {
                     return;
                 }
-                if (!imageData.fromMobileApp) {
+                if (!messageObject.title || !callbacks[messageObject.title]) {
                     return;
                 }
-                if (imageData.path) {
-                    msg.style.display = "none";
-                    img.style.display = "block";
-                    img.src = imageData.path;
-                } else if (imageData.imageViewActivityClosed) {
-                    img.removeAttribute('src');
-                    img.style.display = "none";
-                    msg.style.display = "block";
-                }
-            });
-            socket.onclose = function (event) {
-                window.location.href = document.referrer;
+                callbacks[messageObject.title](messageObject.body);
             };
+
+            return {
+                on: function (title, callback) {
+                    callbacks[title] = callback;
+                },
+                send: function (title, body) {
+                    ensureSocketOpened(function () {
+                        socket.send(JSON.stringify({
+                            title: title,
+                            body: body
+                        }));
+                    });
+                },
+                remove: function (title) {
+                    delete callbacks[title];
+                },
+                onClose: function (callback) {
+                    socket.onclose = function (event) {
+                        callback(event);
+                    };
+                }
+            };
+        };
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function (event) {
+            var wsUrl = 'ws://' + document.location.host + '/wsmessaging';
+
+            var messaging = clientMessaging(wsUrl);
+
+            var img = document.getElementById('img-container');
+            var msg = document.getElementById('instruction');
+
+            messaging.on('image', function (path) {
+                msg.style.display = "none";
+                img.style.display = "block";
+                img.src = path;
+            });
+
+            messaging.on('albums', function () {
+                img.removeAttribute('src');
+                img.style.display = "none";
+                msg.style.display = "block";
+            });
+
+            messaging.onClose(function (event) {
+                window.location.href = document.referrer;
+            });
         });
     </script>
     <style>
@@ -44,7 +100,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-        }        
+        }
 
         body {
             font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;

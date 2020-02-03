@@ -20,7 +20,7 @@ namespace BroadCast.Web
     class Server
     {
         public static string port = ":8080";
-        public WebSocketsServer wss = new WebSocketsServer("/chat");
+        public WebSocketsServer wss = new WebSocketsServer("/wsmessaging");
         public Server()
         {
             Task.Factory.StartNew(async () =>
@@ -33,7 +33,7 @@ namespace BroadCast.Web
                 {
                     string folderPath = String.Join("/", albumCover.imagePath.Split('/').SkipLast(1).ToArray());
                     server.WithStaticFolder("/" + albumCover.albumId, folderPath, true);
-                }                
+                }
                 server.WithEmbeddedResources("/", assembly, "BroadCast.Web.Static");
                 await server.RunAsync();
             });
@@ -65,12 +65,12 @@ namespace BroadCast.Web
             protected override Task OnClientConnectedAsync(IWebSocketContext context)
             {
                 wssContext = context;
-                return SendAsync(context, "Welcome to the chat room!");
+                return SendAsync(context, "connected");
             }
 
             /// <inheritdoc />
             protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
-                => SendToOthersAsync(context, "Someone left the chat room.");
+                => SendToOthersAsync(context, "disconnected");
 
             private Task SendToOthersAsync(IWebSocketContext context, string payload)
                 => BroadcastAsync(payload, c => c != context);

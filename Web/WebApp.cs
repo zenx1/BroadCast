@@ -10,9 +10,8 @@ namespace BroadCast.Web
         public static void Connect(string uuid, string wsUrl, Action Connected)
         {
             JObject registrationData = new JObject();
-            registrationData["fromMobileApp"] = true;
-            registrationData["uuid"] = uuid;
-            registrationData["url"] = "http://" + GetLocalIPAddress();
+            registrationData["title"] = uuid;
+            registrationData["body"] = "http://" + GetLocalIPAddress();
             WebSocket websocket = new WebSocket(wsUrl);
             websocket.Opened += new EventHandler(websocket_Opened);
             websocket.Open();
