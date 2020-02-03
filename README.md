@@ -21,7 +21,7 @@ Steps to use:
 3) point the phone camera to QR code displayed in the browser
 4) when app recognizes QR code it will automatically open gallery with all folders containing images on your smartphone
 5) tap on one of the folders with images, gallery with all images in that folder will appear
-6) tap on one of the images and it will appear in your web browser, tap another image to have that image displayed in the browser, etc
+6) tap on one of the images and it will appear in your web browser on another device, tap another image to have that image displayed in the browser, etc
 7) press back key on your mobile phone to go back to folder selection
 8) select another folder or press back key again to exit app
 
