@@ -5,7 +5,13 @@
     <meta charset="utf-8" />
     <title>BroadCastConnect</title>
     <script>
-        var clientMessaging = function (wsUrl) {
+        /* IMPORTANT
+         *
+         * Don't use features of ES6 and above as plenty of smart TVs
+         * use outdated browsers which don't support ES6 and above
+         */
+
+        var simpleSocketClient = function (wsUrl) {
             var socket = new WebSocket(wsUrl);
 
             var callbacks = {};
@@ -31,32 +37,32 @@
             })();
 
             socket.onmessage = function (event) {
-                var messageObject;
+                var data;
                 try {
-                    messageObject = JSON.parse(event.data);
+                    data = JSON.parse(event.data);
                 } catch (ex) {
                     return;
                 }
-                if (!messageObject.title || !callbacks[messageObject.title]) {
+                if (!data.name || !callbacks[data.name]) {
                     return;
                 }
-                callbacks[messageObject.title](messageObject.body);
+                callbacks[data.name](data.body);
             };
 
             return {
-                on: function (title, callback) {
-                    callbacks[title] = callback;
+                on: function (name, callback) {
+                    callbacks[name] = callback;
                 },
-                send: function (title, body) {
+                send: function (name, body) {
                     ensureSocketOpened(function () {
                         socket.send(JSON.stringify({
-                            title: title,
+                            name: name,
                             body: body
                         }));
                     });
                 },
-                remove: function (title) {
-                    delete callbacks[title];
+                remove: function (name) {
+                    delete callbacks[name];
                 },
                 onClose: function (callback) {
                     socket.onclose = function (event) {
@@ -70,24 +76,24 @@
         window.addEventListener('DOMContentLoaded', function (event) {
             var wsUrl = 'ws://' + document.location.host + '/wsmessaging';
 
-            var messaging = clientMessaging(wsUrl);
+            var simpleSocket = simpleSocketClient(wsUrl);
 
             var img = document.getElementById('img-container');
             var msg = document.getElementById('instruction');
 
-            messaging.on('image', function (path) {
+            simpleSocket.on('image', function (path) {
                 msg.style.display = "none";
                 img.style.display = "block";
                 img.src = path;
             });
 
-            messaging.on('albums', function () {
+            simpleSocket.on('albums', function () {
                 img.removeAttribute('src');
                 img.style.display = "none";
                 msg.style.display = "block";
             });
 
-            messaging.onClose(function (event) {
+            simpleSocket.onClose(function (event) {
                 window.location.href = document.referrer;
             });
         });

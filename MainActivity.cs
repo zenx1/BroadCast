@@ -36,19 +36,23 @@ namespace BroadCast
                 ImageAlbums albums = new ImageAlbums();
                 DataContainer.SetAlbums(albums);
                 Server server = new Server();
+                SimpleSocketServer simpleSocket = new SimpleSocketServer(server.wss);
+
                 DataContainer.NewImageSelected += new EventHandler((object sender, EventArgs e) =>
                 {
-                    JObject imageData = new JObject();
-                    imageData["title"] = "image";
-                    imageData["body"] = ((DataContainer.NewImageSelectedEventArgs)e).remotePath;
-                    server.wss.sendMessage(imageData.ToString());
+                    simpleSocket.Send("image", ((DataContainer.NewImageSelectedEventArgs)e).remotePath);
                 });
+
                 DataContainer.ImageViewActvitiyClosed += new EventHandler((object sender, EventArgs e) =>
                 {
-                    JObject imageData = new JObject();
-                    imageData["title"] = "albums";
-                    server.wss.sendMessage(imageData.ToString());
+                    simpleSocket.Send("albums");
                 });
+
+                simpleSocket.onClose(() =>
+                {
+                    // TODO close app
+                });
+
                 Connect();
             });
         }

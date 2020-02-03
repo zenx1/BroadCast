@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\AlbumViewActivity.cs" />
+    <Compile Include="Web\SimpleSocketClient.cs" />
+    <Compile Include="Web\SimpleSocketServer.cs" />
     <Compile Include="Web\WebApp.cs" />
     <Compile Include="Activities\ImageViewActivity.cs" />
     <Compile Include="Adapters\AlbumViewAdapter.cs" />

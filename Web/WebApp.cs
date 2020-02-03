@@ -7,22 +7,11 @@ namespace BroadCast.Web
 {
     static class WebApp
     {
-        public static void Connect(string uuid, string wsUrl, Action Connected)
+        public static void Connect(string uuid, string wsUrl, Action callback)
         {
-            JObject registrationData = new JObject();
-            registrationData["title"] = uuid;
-            registrationData["body"] = "http://" + GetLocalIPAddress();
-            WebSocket websocket = new WebSocket(wsUrl);
-            websocket.Opened += new EventHandler(websocket_Opened);
-            websocket.Open();
-
-            void websocket_Opened(object sender, EventArgs e)
-            {
-                websocket.Send(registrationData.ToString());
-                websocket.Close();
-                websocket.Dispose();
-                Connected();
-            }
+            SimpleSocketClient simpleSocket = new SimpleSocketClient(wsUrl);
+            simpleSocket.onConnected(callback);
+            simpleSocket.send(uuid, "http://" + GetLocalIPAddress());
         }
 
         static string GetLocalIPAddress()

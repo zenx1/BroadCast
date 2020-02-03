@@ -54,6 +54,9 @@ namespace BroadCast.Web
                 SendAsync(wssContext, message);
             }
 
+            public Action onClientDisconnected = () => { };
+
+
             /// <inheritdoc />
             protected override Task OnMessageReceivedAsync(
                 IWebSocketContext context,
@@ -70,7 +73,9 @@ namespace BroadCast.Web
 
             /// <inheritdoc />
             protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
-                => SendToOthersAsync(context, "disconnected");
+            {
+                return Task.Run(() => onClientDisconnected());
+            }
 
             private Task SendToOthersAsync(IWebSocketContext context, string payload)
                 => BroadcastAsync(payload, c => c != context);
